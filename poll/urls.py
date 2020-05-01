@@ -1,9 +1,10 @@
 from django.urls import path
-
+from django.contrib import admin
 from . import views
 
 urlpatterns = [
     path('vote/', views.vote, name='vote'),
-    path('login/', views.login, name='login'),
-    path('vote/<int:pk>/', views.addVote, name='addVote'),
+    path('create/<int:pk>', views.create, name='create'),
+    path('seal', views.seal, name='seal'),
+    path('verify', views.verify, name='verify'),
 ]
