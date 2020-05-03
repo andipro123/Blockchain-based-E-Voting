@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>SecureVote</title>
+    <style>
+        .bg1 {
+            background-color: #dcdde1;
+            padding-top: 5%;
+            padding-bottom: 31%;
+        }
+    </style>
+</head>
+<body>
+    <nav class='navbar navbar-expand-lg navbar-dark bg-dark justify-content-between'>
+        <a href="home.html" class="navbar-brand p-2" style="font-size: 2vw;">SecureVote</a>
+        <ul class="navbar-nav">
+            <li class="nav-item mr-2">
+                <a href="{% url 'home' %}" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item mr-2">
+                <a href="{% url 'login' %}" class="nav-link">Login</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'verify' %}" class="nav-link">Verify Votes</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'result' %}" class="nav-link">Results</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid bg1">
+                {% block content %}
+                {% endblock %}
+    </div>
+</body>

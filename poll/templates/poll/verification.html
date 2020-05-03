@@ -1,11 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verification</title>
-</head>
-<body>
-    <h1>{{ verification }}</h1> 
-</body>
-</html>
+{% extends 'poll/base.html' %}
+{% block content %}
+    {% if error %}
+        <div class="alert alert-danger text-center">
+            <h4 class="alert-header">{{verification}}</h4>
+        </div>
+    {% else %}
+        <div class="alert alert-success text-center">
+            <h4 class="alert-header">{{verification}}</h4>
+        </div>
+        <div class="container-fluid">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Unique ID</th>
+                        <th scope="col">Candidate ID</th>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Block_ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vote in votes %}
+                    <tr>
+                        <td>{{ vote.id }}</td>
+                        <td>{{ vote.vote }}</td>
+                        <td>{{ vote.timestamp }}</td>
+                        <td>{{ vote.block_id }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+{% endblock %}

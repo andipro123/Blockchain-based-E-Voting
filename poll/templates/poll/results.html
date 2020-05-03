@@ -1,0 +1,33 @@
+{% extends 'poll/base.html' %}
+{% block content %}
+    <div class="alert alert-success text-center" role="alert">
+        <h4 class="alert-heading">All votes have been verified successfully!</h4>
+    </div>
+    <table class="table table-hover text-center">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Candidate ID</th>
+                <th scope="col">Candidate Name</th>
+                <th scope="col">Candidate Age</th>
+                <th scope="col">Candidate Party</th>
+                <th scope="col">Number of Votes</th>
+            </tr>
+        </thead>
+        {% if candidates %}
+        <tbody>
+        {% for candidate in candidates %}
+            <tr style="{% if candidate == winner %} background-color:#2ecc71; color:white; {% endif %}">
+                <th scope="row">{{ candidate.candidateID }}</th>
+                <td>{{ candidate.name }}</td>
+                <td>{{ candidate.age }}</td>
+                <td>{{ candidate.party }}</td>
+                <td>{{ candidate.count }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        {% else %}
+        <p>No candidates yet</p>
+        {% endif %}
+{% endblock content %}

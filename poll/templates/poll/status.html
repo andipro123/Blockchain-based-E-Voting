@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <title>Success</title>
-</head>
-<body>
+{% extends 'poll/base.html' %}
+{% block content %}
+
     <div class="container">
-        <h1>Signature Verification</h1>
+        <h1 style="margin-bottom: 30px; text-align: center;">Signature Verification</h1>
         <div style="padding:3%; border:1px solid black;">
             <p>Your ballot was <code>{{ ballot }}</code></p>
             <p>Generated signature <code>{{ signature }}</code></p><br>
@@ -25,6 +19,4 @@
             {% endif %}
         </div>
     </div>
-    
-</body>
-</html>
+{% endblock %}

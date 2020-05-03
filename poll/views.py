@@ -1,12 +1,18 @@
 from django.shortcuts import render,redirect
 from . import models
 import math
+from datetime import datetime
 from django.contrib.admin.forms import AuthenticationForm
 import time, datetime
 from hashlib import sha512, sha256
 from .merkleTree import merkleTree
 import uuid
 from django.conf import settings
+
+resultCalculated = False
+
+def home(request):
+    return render(request, 'poll/home.html')
 
 def vote(request):
     candidates = models.Candidate.objects.all()
@@ -59,6 +65,7 @@ def create(request, pk):
             'status': status,
             'error': error,
         }
+        print(error)
         if not error:
             return render(request, 'poll/status.html', context)
 
@@ -98,34 +105,67 @@ def seal(request):
             block.save()
             print('Block {} has been mined'.format(block_id))
 
-    return redirect("vote")
+    return redirect("home")
+
+def retDate(v):
+    v.timestamp = datetime.datetime.fromtimestamp(v.timestamp)
+    return v
 
 def verify(request):
-    if request.method == 'POST':
-        block_count = models.Block.objects.count()
-        tampered_block_list = []
+    if request.method == 'GET':
         verification = ''
-        for i in range (1, block_count+1):
-            block = models.Block.objects.get(id=i)
-            transactions = models.Vote.objects.filter(block_id=i)
-            str_transactions = [str(x) for x in transactions]
-
-            merkle_tree = merkleTree.merkleTree()
-            merkle_tree.makeTreeFromArray(str_transactions)
-            merkle_tree.calculateMerkleRoot()
-
-
-            if (block.merkle_hash == merkle_tree.getMerkleRoot()):
-                continue
-            else:
-                tampered_block_list.append(i)
-                
+        tampered_block_list = verifyVotes()
+        votes = []
         if tampered_block_list:
-            verification = 'Verification Failed. Following blocks have been tampered {}'.format(tampered_block_list)
+            verification = 'Verification Failed. Following blocks have been tampered --> {}.\
+                The authority will resolve the issue'.format(tampered_block_list)
+            error = True
         else:
-            verification = 'Verification successful. All votes are intact'
+            verification = 'Verification successful. All votes are intact!'
+            error = False
+            votes = models.Vote.objects.order_by('timestamp')
+            votes = [retDate(x) for x in votes]
+            
+        context = {'verification':verification, 'error':error, 'votes':votes}
+        return render(request, 'poll/verification.html', context)
 
-    return render(request, 'poll/verification.html', {'verification':verification})
+def result(request):
+    if request.method == "GET":
+        global resultCalculated
+        if not resultCalculated:
+            list_of_votes = models.Vote.objects.all()
+            voteVerification = verifyVotes()
+            if len(voteVerification):
+                return render(request, 'poll/verification.html', {'verification':"Verification failed.\
+                Votes have been tampered in following blocks --> {}. The authority \
+                    will resolve the issue".format(voteVerification), 'error':True})
+            
+            else:
+                for vote in list_of_votes:
+                    candidate = models.Candidate.objects.filter(candidateID=vote.vote)[0]
+                    candidate.count += 1
+                    candidate.save()
+            resultCalculated = True            
+
+        context = {"candidates":models.Candidate.objects.order_by('count'), "winner":models.Candidate.objects.order_by('count').reverse()[0]}
+        return render(request, 'poll/results.html', context)
 
 
-    
+def verifyVotes():
+    block_count = models.Block.objects.count()
+    tampered_block_list = []
+    for i in range (1, block_count+1):
+        block = models.Block.objects.get(id=i)
+        transactions = models.Vote.objects.filter(block_id=i)
+        str_transactions = [str(x) for x in transactions]
+
+        merkle_tree = merkleTree.merkleTree()
+        merkle_tree.makeTreeFromArray(str_transactions)
+        merkle_tree.calculateMerkleRoot()
+
+        if (block.merkle_hash == merkle_tree.getMerkleRoot()):
+            continue
+        else:
+            tampered_block_list.append(i)
+
+    return tampered_block_list

@@ -1,31 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends '../poll/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Login</title>
-</head>
-
-<body>
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table>
-        <input type="submit" value="login" />
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
-    
-</body>
-
-</html>
+{% block content %}
+<div class="row">
+    <div class="col mx-auto">
+        <div class="card mx-auto text-center my-5"
+        style="border-radius: 25px; width: 30vw; height: 60vh; box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+        font-size: 1.4vw;">
+            <form method="post" action="{% url 'login' %}" class="form-signin p-3">
+                {% csrf_token %}
+                <label for="username" class="my-4">Username:</label><br>
+                {{ form.username }}<br>
+                <label for="password" class="my-4">Password:</label><br>
+                {{ form.password }}<br>
+                <input type="submit" value="LOGIN" class="btn btn-primary my-5" style="font-size: 1.4vw;">
+                <input type="hidden" name="next" value="{{ next }}" />
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

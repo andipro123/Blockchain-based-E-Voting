@@ -1,44 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends './base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Home</title>
-</head>
-
+{% block content %}
 <body>
-    <h1 style="text-align: center;">Cast your votes</h1>
     <div class="row text-center p-3">
         {% if candidates %}
         {% for candidate in candidates %}
         <div class="col-md-4">
-            <div class="card p-3 mt-5 mx-auto">
+            <div class="card p-3 mt-5 mx-auto"
+            style="border-radius: 25px; width: 30vw; height: 70vh; box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+        font-size: 1.4vw;">
                 <h2>Name: {{ candidate.name }}</h2>
                 <h4>CandidateID: {{ candidate.candidateID }}</h4>
                 <h5>Age: {{ candidate.age }}</h5>
                 <h5>Party: {{ candidate.party }}</h5>
                 <h5>Criminal Records: {% if candidate.criminalRecords == False %} None {% else %} Present {% endif %}
                 </h5>
-                <form action="{% url 'create' pk=candidate.candidateID %}" method="POST">
+                <form action="{% url 'create' pk=candidate.candidateID %}" method="POST" class="form-group">
                     {% csrf_token %}
-                    <input type="text" name="privateKey_n" class="form-control">
-                    <input type="text" name="privateKey_d" class="form-control">
-                    <input type="submit" value="Vote" class="btn btn-primary">
+                    <input type="text" name="privateKey_n" class="form-control my-3" placeholder="Private_Key 'n'" style="text-align: center;" required>
+                    <input type="text" name="privateKey_d" class="form-control my-3" placeholder="Private_Key 'd'" style="text-align: center;" required>
+                    <input type="submit" value="Vote" class="btn btn-primary my-4">
                 </form>
             </div>
         </div>
         {% endfor %}
-        <form action="{% url 'verify' %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="verify" class="btn btn-danger">
-        </form>
         {% else %}
         <p>No candidates yet</p>
         {% endif %}
     </div>
 </body>
-
-</html>
+{% endblock %}

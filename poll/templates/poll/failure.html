@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Failure</title>
-</head>
-<body>
-    <h1>Authentication Error</h1> 
-</body>
-</html>
+{% extends 'poll/base.html' %}
+{% block content %}
+    <div class="alert alert-danger text-center">
+        <h3 class="alert-heading">Authentication error! Kindly login again</h3>
+    </div>
+{% endblock content %}

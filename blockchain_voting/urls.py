@@ -19,6 +19,6 @@ from django.contrib.auth.views import LoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('', include('poll.urls'))
 ]
