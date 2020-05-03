@@ -16,6 +16,13 @@ It converts ballots into transactions and securely mines blocks out of them. The
 2. cd into the folder and run pip install django
 3. python3 manage.py runserver.
 
+## Screenshots:
+<img width="960" alt="vote_verification" src="https://user-images.githubusercontent.com/54449305/80915076-5679dc80-8d6d-11ea-9650-3fe960bd9896.png">
+
+<img width="960" alt="user-authentication" src="https://user-images.githubusercontent.com/54449305/80915092-73161480-8d6d-11ea-923a-15f4788d8e40.png">
+
+![vote_page](https://user-images.githubusercontent.com/54449305/80915104-8a550200-8d6d-11ea-9880-d0c111d4d096.png)
+
 
 
 #### --This is only a demonstration of the blockchain based voting system and it is entirely a prototype of the technology--
