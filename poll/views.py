@@ -132,19 +132,19 @@ def verify(request):
 def result(request):
     if request.method == "GET":
         global resultCalculated
-        if not resultCalculated:
-            list_of_votes = models.Vote.objects.all()
-            voteVerification = verifyVotes()
-            if len(voteVerification):
+        voteVerification = verifyVotes()
+        if len(voteVerification):
                 return render(request, 'poll/verification.html', {'verification':"Verification failed.\
                 Votes have been tampered in following blocks --> {}. The authority \
                     will resolve the issue".format(voteVerification), 'error':True})
-            
-            else:
-                for vote in list_of_votes:
-                    candidate = models.Candidate.objects.filter(candidateID=vote.vote)[0]
-                    candidate.count += 1
-                    candidate.save()
+
+        if not resultCalculated:
+            list_of_votes = models.Vote.objects.all()
+            for vote in list_of_votes:
+                candidate = models.Candidate.objects.filter(candidateID=vote.vote)[0]
+                candidate.count += 1
+                candidate.save()
+                
             resultCalculated = True            
 
         context = {"candidates":models.Candidate.objects.order_by('count'), "winner":models.Candidate.objects.order_by('count').reverse()[0]}
