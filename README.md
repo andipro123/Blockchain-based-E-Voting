@@ -25,4 +25,10 @@ It converts ballots into transactions and securely mines blocks out of them. The
 
 
 
+## Contributors
+1. Aniket Jayateerth
+2. Soureesh Patil
+3. Rishabh Agarwal
+4. Anup Nair
+
 #### --This is only a demonstration of the blockchain based voting system and it is entirely a prototype of the technology--
